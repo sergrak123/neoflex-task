@@ -30,7 +30,7 @@ public class VacationPayServiceImpl implements VacationPayService {
     public BigDecimal calculateVacationPay(BigDecimal averageMonthSalary, int vacationDays) {
 
         BigDecimal averageDaySalary = averageMonthSalary
-                .divide(BigDecimal.valueOf(AVERAGE_DAYS_IN_MONTH), 2, RoundingMode.HALF_EVEN);
+                .divide(BigDecimal.valueOf(AVERAGE_DAYS_IN_MONTH), 4, RoundingMode.HALF_UP);
 
         return averageDaySalary.multiply(BigDecimal.valueOf(vacationDays));
     }
