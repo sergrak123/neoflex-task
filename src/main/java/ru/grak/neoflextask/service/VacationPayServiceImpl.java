@@ -15,8 +15,17 @@ import static ru.grak.neoflextask.data.Holidays.getHolidayDays;
 @Service
 public class VacationPayServiceImpl implements VacationPayService {
 
+    /** Среднее количество дней в месяце */
     private static final double AVERAGE_DAYS_IN_MONTH = 29.3;
 
+    /**
+     * Рассчитывает оплату за отпуск на основе средней заработной платы за месяц
+     * и количества дней отпуска.
+     *
+     * @param averageMonthSalary средняя заработная плата за месяц
+     * @param vacationDays количество дней отпуска
+     * @return рассчитанная оплата за отпуск
+     */
     @Override
     public BigDecimal calculateVacationPay(BigDecimal averageMonthSalary, int vacationDays) {
 
@@ -26,6 +35,15 @@ public class VacationPayServiceImpl implements VacationPayService {
         return averageDaySalary.multiply(BigDecimal.valueOf(vacationDays));
     }
 
+    /**
+     * Рассчитывает оплату за отпуск на основе средней заработной платы за месяц,
+     * количества дней отпуска и даты начала отпуска.
+     *
+     * @param averageMonthSalary средняя заработная плата за месяц
+     * @param vacationDays количество дней отпуска
+     * @param vacationStartDate дата начала отпуска
+     * @return рассчитанная оплата за отпуск
+     */
     @Override
     public BigDecimal calculateVacationPay(BigDecimal averageMonthSalary, int vacationDays, LocalDate vacationStartDate) {
 
@@ -34,6 +52,14 @@ public class VacationPayServiceImpl implements VacationPayService {
         return calculateVacationPay(averageMonthSalary, totalVacationDays);
     }
 
+    /**
+     * Рассчитывает общее количество оплачиваемых дней отпуска на основе
+     * количества дней отпуска и даты начала отпуска, исключая праздничные и выходные дни.
+     *
+     * @param vacationDays количество дней отпуска
+     * @param vacationStartDate дата начала отпуска
+     * @return общее количество оплачиваемых дней отпуска
+     */
     private int calculatePaidDays(int vacationDays, LocalDate vacationStartDate) {
 
         List<LocalDate> vacationDaysWithHolidays = Stream
@@ -45,6 +71,12 @@ public class VacationPayServiceImpl implements VacationPayService {
         return vacationDaysWithHolidays.size();
     }
 
+    /**
+     * Проверяет, является ли заданная дата праздничным днем.
+     *
+     * @param date дата для проверки
+     * @return true, если дата является праздничным днем, в противном случае - false
+     */
     private boolean isHoliday(LocalDate date){
         var holidayDays = getHolidayDays();
 
